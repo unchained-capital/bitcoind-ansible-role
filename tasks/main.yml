@@ -56,3 +56,8 @@
 
 - name: Start bitcoind
   service: name=bitcoind state={{bitcoind_state}} enabled={{ bitcoind_enable }}
+
+- include: blockparser.yml
+  tags:
+    - blockparser
+  

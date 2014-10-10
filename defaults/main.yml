@@ -58,3 +58,30 @@ bitcoind_whitelist: []
 
 bitcoind_state: started
 bitcoind_enable: yes
+
+
+#
+# Blockparser
+#
+blockparser_packages:
+  libssl-dev:
+    description: libssl-dev
+    apt_name: libssl-dev
+  g++-4.4:
+    description: g++-4.4
+    apt_name: g++-4.4
+  libboost-all-dev:
+    description: libboost-all-dev
+    apt_name: libboost-all-dev
+  libsparsehash-dev:
+    description: libsparsehash-dev
+    apt_name: libsparsehash-dev
+  git-core:
+    description: git-core
+    apt_name: git-core
+  perl:
+    description: perl
+    apt_name: perl
+        
+blockparser_repo: https://github.com/mcdee/blockparser
+blockparser_source_dir: /usr/local/src/blockparser

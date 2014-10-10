@@ -1,0 +1,21 @@
+---
+
+- name: Install blockparser dependencies
+  apt: name={{ item.value.apt_name }}
+  when: ansible_pkg_mgr == "apt"
+  with_dict: blockparser_packages
+
+- name: Clone blockparser repository
+  git: repo={{ blockparser_repo }} dest={{ blockparser_source_dir }} accept_hostkey=true
+
+- name: Make blockparser
+  command: make
+  args:
+    chdir: "{{ blockparser_source_dir }}"
+    creates: "{{ blockparser_source_dir }}/parser"
+  
+- name: Make install blockparser
+  command: cp parser /usr/local/bin/blockparser
+  args:
+    chdir: "{{ blockparser_source_dir }}"
+    creates: /usr/local/bin/blockparser
