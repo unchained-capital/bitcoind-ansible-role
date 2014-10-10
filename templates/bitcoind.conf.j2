@@ -1,0 +1,452 @@
+#
+# General options
+#
+
+# Execute command when a relevant alert is received or we see a really
+# long fork (%s in cmd is replaced by message)
+#alertnotify=/usr/local/bin/send-alert me@example.com '%s'
+{% if bitcoind_alertnotify is defined %}
+alertnotify={{ bitcoind_alertnotify }}
+{% endif %}
+
+# Execute command when the best block changes (%s in cmd is replaced
+# by block hash)
+#blocknotify=/usr/local/bin/send-alert me@example.com '%s'
+{% if bitcoind_blocknotify is defined %}
+blocknotify={{ bitcoind_blocknotify }}
+{% endif %}
+
+# How many blocks to check at startup (default: 288, 0 = all)
+#checkblocks=288
+{% if bitcoind_checkblocks is defined %}
+checkblocks={{ bitcoind_checkblocks }}
+{% endif %}
+
+# Run in the background as a daemon and accept commands
+{% if bitcoind_daemon is defined %}
+daemon={{ bitcoind_daemon }}
+{% endif %}
+
+# Set database cache size in megabytes (4 to 4096, default: 100)
+#dbcache=100
+{% if bitcoind_dbcache is defined %}
+dbcache={{ bitcoind_dbcache }}
+{% endif %}
+
+# Imports blocks from external blk000??.dat file on startup
+#loadblock=/path/to/blk000??.dat
+{% if bitcoind_loadblock is defined %}
+loadblock={{ bitcoind_loadblock }}
+{% endif %}
+
+# Keep at most <n> unconnectable blocks in memory (default: 750)
+#maxorphanblocks=750
+{% if bitcoind_maxorphanblocks is defined %}
+maxorphanblocks={{ bitcoind_maxorphanblocks }}
+{% endif %}
+
+# Keep at most <n> unconnectable transactions in memory (default: 100)
+#maxorphantx=100
+{% if bitcoind_maxorphantx is defined %}
+maxorphantx={{ bitcoind_maxorphantx }}
+{% endif %}
+
+# Set the number of script verification threads (-4 to 16, 0 = auto,
+# <0 = leave that many cores free, default: 0)
+#par=0
+{% if bitcoind_par is defined %}
+par={{ bitcoind_par }}
+{% endif %}
+
+# Specify pid file (default: bitcoind.pid)
+#pid=bitcoind.pid
+{% if bitcoind_pid is defined %}
+pid={{ bitcoind_pid }}
+{% endif %}
+
+# Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)
+#sysperms=[1|0]
+{% if bitcoind_sysperms is defined %}
+sysperms={{ bitcoind_sysperms }}
+{% endif %}
+
+# Maintain a full transaction index, used by the getrawtransaction rpc call (default: 0)
+#txindex=[1|0]
+{% if bitcoind_txindex is defined %}
+txindex={{ bitcoind_txindex }}
+{% endif %}
+
+#
+# Connection options
+#
+
+# Use as many *addnode=* settings as you like to connect to
+# specific peers.
+#addnode=10.0.0.2:8333
+{% for node_address in bitcoind_add_nodes %}
+addnode={{ node_address }}
+{% endfor %}
+
+# Threshold for disconnecting misbehaving peers (default: 100)
+#banscore=100
+{% if bitcoind_ban_score is defined %}
+banscore={{ bitcoind_ban_score }}
+{% endif %}
+
+# Number of seconds to keep misbehaving peers from reconnecting
+# (default: 86400)
+#bantime=86400
+{% if bitcoind_ban_time is defined %}
+bantime={{ bitcoind_ban_time }}
+{% endif %}
+
+# Bind to given address and always listen on it. Use [host]:port
+# notation for IPv6
+{% if bitcoind_bind is defined %}
+bind={{ bitcoind_bind }}
+{% endif %}
+
+# Use  as  many  *connect=* settings as you like to connect
+# ONLY to specific peers.
+#connect=10.0.0.1:8333
+{% for node_address in bitcoind_only_nodes %}
+connect={{ node_address }}
+{% endfor %}
+
+# Discover own IP address (default: 1 when listening and no
+# -externalip)
+#discover=[1|0]
+{% if bitcoind_discover is defined %}
+discover={{ bitcoind_discover }}
+{% endif %}
+
+# Allow DNS lookups for -addnode, -seednode and -connect (default: 1)
+#dns=[1|0]
+{% if bitcoind_dns is defined %}
+dns={{ bitcoind_dns }}
+{% endif %}
+
+# Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect)
+#dnsseed=[1|0]
+{% if bitcoind_dns_seed is defined %}
+dnsseed={{ bitcoind_dns_seed }}
+{% endif %}
+
+# Specify your own public address
+#externalip=<ip>
+{% if bitcoind_external_ip is defined %}
+externalip={{ bitcoind_external_ip }}
+{% endif %}
+
+# Always query for peer addresses via DNS lookup (default: 0)
+#forcednsseed=[1|0]
+{% if bitcoind_force_dns_seed is defined %}
+forcednsseed={{ bitcoind_force_dns_seed }}
+{% endif %}
+
+# Accept connections from outside (default: 1 if no -proxy or
+# -connect)
+#listen=[1|0]
+{% if bitcoind_listen is defined %}
+listen={{ bitcoind_listen }}
+{% endif %}
+
+# Maximum number of inbound+outbound connections.
+#maxconnections=125
+{% if bitcoind_max_connections is defined %}
+maxconnections={{ bitcoind_max_connections }}
+{% endif %}
+
+# Maximum per-connection receive buffer, <n>*1000 bytes (default:
+#5000)
+#maxreceivebuffer=5000
+{% if bitcoind_max_receive_buffer is defined %}
+maxreceivebuffer={{ bitcoind_max_receive_buffer }}
+{% endif %}
+
+# Use separate SOCKS5 proxy to reach peers via Tor hidden services
+# (default: -proxy)
+#onion=<ip:port>
+{% if bitcoind_onion is defined %}
+onion={ bitcoind_onion }}
+{% endif %}
+
+# Only connect to nodes in network <net> (ipv4, ipv6 or onion)
+#onlynet=<ip:port>
+{% if bitcoind_only_net is defined %}
+onlynet={{ bitcoind_only_net }}
+{% endif %}
+
+# Relay non-P2SH multisig (default: 1)
+#permitbaremultisig=[1|0]
+{% if bitcoind_permit_bare_multisig is defined %}
+permitbaremultisig={{ bitcoind_permit_bare_multisig }}
+{% endif %}
+
+# Listen for connections on <port> (default: 8333 or testnet: 18333)
+#port=<port>
+{% if bitcoind_port is defined %}
+port={{ bitcoind_port }}
+{% endif %}
+
+# Connect via a SOCKS5 proxy.
+#proxy=127.0.0.1:9050
+{% if bitcoind_proxy is defined %}
+proxy={{ bitcoind_proxy }}
+{% endif %}
+
+# Connect to a node to retrieve peer addresses, and disconnect
+#seednode=127.0.0.1:9050
+{% if bitcoind_seed_node is defined %}
+seednode={{ bitcoind_seed_node }}
+{% endif %}
+
+# Specify connection timeout in milliseconds (minimum: 1, default:
+#5000)
+#timeout=5000
+{% if bitcoind_timeout is defined %}
+timeout={{ bitcoind_timeout }}
+{% endif %}
+
+# Bind to given address and whitelist peers connecting to it. Use
+#[host]:port notation for IPv6
+#whitebind=<host:port>
+{% if bitcoind_whitebind is defined %}
+whitebind={{ bitcoind_whitebind }}
+{% endif %}
+
+# Whitelist peers connecting from the given netmask or ip. Can be
+# specified multiple times. Whitelisted peers cannot be DoS banned and
+# their transactions are always relayed, even if they are already in
+# the mempool, useful e.g. for a gateway
+#whitelist=<ip>
+{% for node_address in bitcoind_whitelist %}
+whitelist={{ node_address }}
+{% endfor %}
+
+#
+# Debugging/Testing options
+#
+
+# Output debugging information (default: 0, supplying <category> is
+# optional) If <category> is not supplied, output all debugging
+# information. <category> can be: addrman, alert, bench, coindb, db,
+# lock, rand, rpc, selectcoins, mempool, net.
+#debug=0
+{% if bitcoind_debug is defined %}
+debug={{ bitcoind_debug }}
+{% endif %}
+
+# Include IP addresses in debug output (default: 0)
+#logips=0
+{% if bitcoind_log_ips is defined %}
+logips={{ bitcoind_log_ips }}
+{% endif %}
+
+# Prepend debug output with timestamp (default: 1)
+#logtimestamps=0
+{% if bitcoind_log_timestamps is defined %}
+logtimestamps={{ bitcoind_log_timestamps }}
+{% endif %}
+
+# Fees (in BTC/Kb) smaller than this are considered zero fee for
+# relaying (default: 0.00001)
+#minrelaytxfee=<amt>
+{% if bitcoind_min_relay_tx_fee is defined %}
+minrelaytxfee={{ bitcoind_min_relay_tx_fee }}
+{% endif %}
+
+# Send trace/debug info to console instead of debug.log file
+#printtoconsole=[1|0]
+{% if bitcoind_print_to_console is defined %}
+printtoconsole={{ bitcoind_print_to_console }}
+{% endif %}
+
+# Shrink debug.log file on client startup (default: 1 when no -debug)
+#shrinkdebugfile=[1|0]
+{% if bitcoind_shrink_debug_file is defined %}
+shrinkdebugfile={{ bitcoind_shrink_debug_file }}
+{% endif %}
+
+# Enable  or disable run on the test network instead of the
+# real *bitcoin* network.
+#testnet=[1|0]
+{% if bitcoind_testnet is defined %}
+testnet={{ bitcoind_testnet }}
+{% endif %}
+
+#
+# Node relay options
+#
+
+# Relay and mine data carrier transactions (default: 1)
+#datacarrier=[1|0]
+{% if bitcoind_data_carrier is defined %}
+datacarrier={{ bitcoind_data_carrier }}
+{% endif %}
+
+#
+# Block creation options
+#
+
+# Set minimum block size in bytes (default: 0)
+#blockminsize=0
+{% if bitcoind_block_min_size is defined %}
+blockminsize={{ bitcoind_block_min_size }}
+{% endif %}
+
+# Set maximum block size in bytes (default: 750000)
+#blockmaxsize=750000
+{% if bitcoind_block_max_size is defined %}
+blockmaxsize={{ bitcoind_block_max_size }}
+{% endif %}
+
+# Set maximum size of high-priority/low-fee transactions in bytes
+#(default: 50000)
+#blockprioritysize=50000
+{% if bitcoind_block_priority_size is defined %}
+blockprioritysize={{ bitcoind_block_priority_size }}
+{% endif %}
+
+#
+# RPC Server options
+#
+
+# Tells   *bitcoin*   to  accept  or  not  accept  JSON-RPC
+# commands.
+#server=[1|0]
+{% if bitcoind_server is defined %}
+server={{ bitcoind_server }}
+{% endif %}
+
+# Bind to given address to listen for JSON-RPC connections. Use
+#[host]:port notation for IPv6. This option can be specified multiple
+#times (default: bind to all interfaces)
+#rpcbind=<ip>
+{% if bitcoind_rpc_bind is defined %}
+rpcbind={{ bitcoind_rpc_bind }}
+{% endif %}
+
+# You must set *rpcuser* to secure the JSON-RPC api.
+#rpcuser=username
+{% if bitcoind_rpc_user is defined %}
+rpcuser={{ bitcoind_rpc_user }}
+{% endif %}
+
+# You must set *rpcpassword* to secure the JSON-RPC api.
+#rpcpassword=password
+{% if bitcoind_rpc_password is defined %}
+rpcpassword={{ bitcoind_rpc_password }}
+{% endif %}
+
+# Listen for RPC connections on this TCP port.
+#rpcport=8332
+{% if bitcoind_rpc_port is defined %}
+rpcport={{ bitcoind_rpc_port }}
+{% endif %}
+
+# Allow JSON-RPC connections from specified source. Valid for <ip> are
+# a single IP (e.g. 1.2.3.4), a network/netmask
+# (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR
+# (e.g. 1.2.3.4/24). This option can be specified multiple times
+#rpcallowip=<ip>
+{% for node_address in bitcoind_rpc_allow %}
+rpcallowip={{ node_address }}
+{% endfor %}
+
+# Set the number of threads to service RPC calls (default: 4)
+#rpcthreads=4
+{% if bitcoind_rpc_threads is defined %}
+rpcthreads={{ bitcoind_rpc_threads }}
+{% endif %}
+
+#
+# RPC SSL options
+#
+
+# Use Secure Sockets Layer (also known as TLS or HTTPS)  to
+# communicate  with  *bitcoin*  -server or *bitcoind(1)*.
+# Example of OpenSSL settings used when *rpcssl*=1:
+#rpcssl=1
+{% if bitcoind_rpc_ssl is defined %}
+rpcssl={{ bitcoind_rpc_ssl }}
+{% endif %}
+
+# Acceptable  ciphers  (default:  TLSv1+HIGH:!SSLv2:!aNULL:
+# !eNULL:!AH:!3DES:@STRENGTH)
+#rpcsslciphers=<ciphers>
+{% if bitcoind_rpc_ssl_ciphers is defined %}
+rpcsslciphers={{ bitcoind_rpc_ssl_ciphers }}
+{% endif %}
+
+#rpcsslcertificatechainfile=server.cert
+{% if bitcoind_rpc_ssl_cert is defined %}
+rpcsslcertificatechainfile={{ bitcoind_rpc_ssl_cert }}
+{% endif %}
+
+#rpcsslprivatekeyfile=server.pem
+{% if bitcoind_rpc_ssl_priv_key is defined %}
+rpcsslprivatekeyfile={{ bitcoind_rpc_ssl_priv_key }}
+{% endif %}
+
+# #
+# # MISCELLANEOUS OPTIONS -- deprecated?
+# #
+# # Enable or disable attempt to generate bitcoins.
+# #gen=[0|1]
+# {% if bitcoind_gen is defined %}
+# gen={{ bitcoind_gen }}
+# {% endif %}
+
+# # Enable or disable use SSE instructions to try to generate
+# # bitcoins faster.
+# #4way=[0|1]
+# {% if bitcoind_4way is defined %}
+# 4way={{ bitcoind_4way }}
+# {% endif %}
+
+# # Pre-generate  this  many  public/private  key  pairs,  so
+# # wallet  backups will be valid for both prior transactions
+# # and several dozen future transactions.
+# #keypool=100
+# {% if bitcoind_keypool is defined %}
+# keypool={{ bitcoind_keypool }}
+# {% endif %}
+
+# # Pay an optional  transaction  fee  every  time  you  send
+# # bitcoins.  Transactions  with  fees  are more likely than
+# # free transactions to be included in generated blocks,  so
+# # may be validated sooner.
+# #paytxfee=0.00
+# {% if bitcoind_paytxfee is defined %}
+# paytxfee={{ bitcoind_paytxfee }}
+# {% endif %}
+
+# # Allow  direct  connections  for  the pay via IP address
+# # feature.
+# #allowreceivebyip=1
+# {% if bitcoind_allow_receive_by_ip is defined %}
+# allowreceivebyip={{ bitcoind_allow_receive_by_ip }}
+# {% endif %}
+
+# # Use or Do not  use  Internet  Relay  Chat  (irc.lfnet.org
+# # #bitcoin channel) to find other peers.
+# #noirc=[1|0]
+# {% if bitcoind_noirc is defined %}
+# noirc={{ bitcoind_noirc }}
+# {% endif %}
+
+# # You can use *bitcoin* or *bitcoind(1)* to  send  commands
+# # to  *bitcoin*/*bitcoind(1)* running on another host using
+# # this option.
+# #rpcconnect=127.0.0.1
+# {% if bitcoind_rpc_connect is defined %}
+# rpcconnect={{ bitcoind_rpc_connect }}
+# {% endif %}
+
+# # How many seconds *bitcoin* will wait for a  complete  RPC
+# # HTTP request, after the HTTP connection is established.
+# #rpctimeout=30
+# {% if bitcoind_rpc_timeout is defined %}
+# rpctimeout={{ bitcoind_rpc_timeout }}
+# {% endif %}

@@ -1,0 +1,60 @@
+---
+
+#
+# Dependencies
+#
+
+bitcoind_packages:
+  libtool:
+    description: libtool
+    apt_name: libtool
+  autotools-dev:
+    description: autotools-dev
+    apt_name: autotools-dev
+  autoconf:
+    description: autoconf
+    apt_name: autoconf
+  pkg-config:
+    description: pkg-config
+    apt_name: pkg-config
+  libssl-dev:
+    description: libssl-dev
+    apt_name: libssl-dev
+  libboost-dev:
+    description: boost
+    apt_name: libboost-all-dev
+
+#
+# Paths & directories
+#
+bitcoind_repo: git://github.com/bitcoin/bitcoin
+bitcoind_home_dir: /var/run/bitcoind
+bitcoind_source_dir: /usr/local/src/bitcoin
+bitcoind_data_dir: /var/lib/bitcoind
+bitcoind_conf_dir: /etc/bitcoind
+
+#
+# Build options
+#
+
+bitcoind_configure_flags: --without-miniupnpc --disable-wallet --without-gui
+
+#
+# User & group
+#
+bitcoind_group_name: bitcoind
+bitcoind_group_gid:  202
+bitcoind_user_name: bitcoind
+bitcoind_user_comment: "bitcoind user"
+bitcoind_user_uid: 202
+bitcoind_user_group: bitcoind
+bitcoind_user_groups: 
+bitcoind_user_shell: /bin/false
+
+bitcoind_add_nodes: []
+bitcoind_only_nodes: []
+bitcoind_rpc_allow: []
+bitcoind_whitelist: []
+
+bitcoind_state: started
+bitcoind_enable: yes
