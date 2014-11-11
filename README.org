@@ -1,6 +1,0 @@
-#+TITLE: bitcoind
-#+SUBTITLE: Ansible Role
-
-This repository implements an [[http://docs.ansible.com/playbooks_roles.html][Ansible role]] for [[https://github.com/bitcoin/bitcoin][bitcoind]].
-
-

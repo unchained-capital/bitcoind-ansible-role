@@ -27,11 +27,11 @@ bitcoind_packages:
 #
 # Paths & directories
 #
-bitcoind_repo: git://github.com/bitcoin/bitcoin
-bitcoind_home_dir: /var/run/bitcoind
+bitcoind_repo:       git://github.com/bitcoin/bitcoin
+bitcoind_home_dir:   /var/run/bitcoind
 bitcoind_source_dir: /usr/local/src/bitcoin
-bitcoind_data_dir: /var/lib/bitcoind
-bitcoind_conf_dir: /etc/bitcoind
+bitcoind_data_dir:   /var/lib/bitcoind
+bitcoind_conf_dir:   /etc/bitcoind
 
 #
 # Build options
@@ -42,13 +42,11 @@ bitcoind_configure_flags: --without-miniupnpc --disable-wallet --without-gui
 #
 # User & group
 #
-bitcoind_group_name: bitcoind
-bitcoind_group_gid:  202
-bitcoind_user_name: bitcoind
-bitcoind_user_comment: "bitcoind user"
+bitcoind_user: bitcoind
+bitcoind_group: bitcoind
 bitcoind_user_uid: 202
-bitcoind_user_group: bitcoind
-bitcoind_user_groups: 
+bitcoind_group_gid:  202
+bitcoind_user_comment: "bitcoind user"
 bitcoind_user_shell: /bin/false
 
 bitcoind_add_nodes: []
@@ -58,7 +56,6 @@ bitcoind_whitelist: []
 
 bitcoind_state: started
 bitcoind_enable: yes
-
 
 #
 # Blockparser
@@ -85,3 +82,6 @@ blockparser_packages:
         
 blockparser_repo: https://github.com/mcdee/blockparser
 blockparser_source_dir: /usr/local/src/blockparser
+
+bitcoind_use_logstash: true
+logstash_conf_dir: /etc/logstash/conf.d

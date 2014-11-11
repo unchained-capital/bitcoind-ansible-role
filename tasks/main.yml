@@ -1,11 +1,5 @@
 ---
 
 - include: bitcoind.yml
-  tags:
-    - bitcoind
-  
 - include: blockparser.yml
-  tags:
-    - bitcoind
-    - blockparser
-  
+- include: logstash.yml

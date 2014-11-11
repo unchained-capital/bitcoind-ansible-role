@@ -4,18 +4,30 @@
   apt: name={{ item.value.apt_name }}
   when: ansible_pkg_mgr == "apt"
   with_dict: blockparser_packages
+  tags:
+    - bitcoind
+    - blockparser
 
 - name: Clone blockparser repository
   git: repo={{ blockparser_repo }} dest={{ blockparser_source_dir }} accept_hostkey=true
+  tags:
+    - bitcoind
+    - blockparser
 
 - name: Make blockparser
   command: make
   args:
     chdir: "{{ blockparser_source_dir }}"
     creates: "{{ blockparser_source_dir }}/parser"
+  tags:
+    - bitcoind
+    - blockparser
   
 - name: Make install blockparser
   command: cp parser /usr/local/bin/blockparser
   args:
     chdir: "{{ blockparser_source_dir }}"
     creates: /usr/local/bin/blockparser
+  tags:
+    - bitcoind
+    - blockparser
