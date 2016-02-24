@@ -5,83 +5,59 @@
 #
 
 bitcoind_packages:
+  build-essential:
+    desription: build-essential
+    apt_name: build-essential
   libtool:
     description: libtool
     apt_name: libtool
   autotools-dev:
     description: autotools-dev
     apt_name: autotools-dev
-  autoconf:
-    description: autoconf
-    apt_name: autoconf
+  automake:
+    description: automake
+    apt_name: automake
   pkg-config:
     description: pkg-config
     apt_name: pkg-config
   libssl-dev:
     description: libssl-dev
     apt_name: libssl-dev
-  libboost-dev:
-    description: boost
+  libevent-dev:
+    description: libevent-dev
+    apt_name: libevent-dev
+  bsdmainutils:
+    description: bsdmainutils
+    apt_name: bsdmainutils
+  libboost-all-dev:
+    description: libboost-all-dev
     apt_name: libboost-all-dev
-
-#
-# Paths & directories
-#
-bitcoind_repo:       git://github.com/bitcoin/bitcoin
-bitcoind_home_dir:   /var/run/bitcoind
-bitcoind_source_dir: /usr/local/src/bitcoin
-bitcoind_data_dir:   /var/lib/bitcoind
-bitcoind_conf_dir:   /etc/bitcoind
 
 #
 # Build options
 #
 
+bitcoind_repo: git://github.com/bitcoin/bitcoin
 bitcoind_configure_flags: --without-miniupnpc --disable-wallet --without-gui
+bitcoind_version: "0.12"
 
+#
+# Paths & directories
+#
+
+bitcoind_home_dir:   /var/run/bitcoind
+bitcoind_source_dir: /usr/local/src/bitcoin
+bitcoind_data_dir:   /var/lib/bitcoind
+bitcoind_conf_dir:   /etc/bitcoind
 #
 # User & group
 #
 bitcoind_user: bitcoind
 bitcoind_group: bitcoind
-bitcoind_user_uid: 202
-bitcoind_group_gid:  202
-bitcoind_user_comment: "bitcoind user"
-bitcoind_user_shell: /bin/false
 
-bitcoind_add_nodes: []
-bitcoind_only_nodes: []
-bitcoind_rpc_allow: []
-bitcoind_whitelist: []
+#
+# Service
+#
 
 bitcoind_state: started
 bitcoind_enable: yes
-
-#
-# Blockparser
-#
-blockparser_packages:
-  libssl-dev:
-    description: libssl-dev
-    apt_name: libssl-dev
-  g++-4.4:
-    description: g++-4.4
-    apt_name: g++-4.4
-  libboost-all-dev:
-    description: libboost-all-dev
-    apt_name: libboost-all-dev
-  libsparsehash-dev:
-    description: libsparsehash-dev
-    apt_name: libsparsehash-dev
-  git-core:
-    description: git-core
-    apt_name: git-core
-  perl:
-    description: perl
-    apt_name: perl
-        
-blockparser_repo: https://github.com/mcdee/blockparser
-blockparser_source_dir: /usr/local/src/blockparser
-
-bitcoind_use_logstash: true
-logstash_conf_dir: /etc/logstash/conf.d

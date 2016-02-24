@@ -11,4 +11,7 @@ console log
 setuid {{ bitcoind_user  }}
 setgid {{ bitcoind_group }}
 
-exec /usr/local/bin/bitcoind -conf="{{ bitcoind_conf_dir }}/bitcoind.conf" -datadir="{{ bitcoind_data_dir }}"
+chdir {{ bitcoind_home_dir }}
+script
+  exec /usr/local/bin/bitcoind -conf="{{ bitcoind_conf_dir }}/bitcoind.conf" -datadir="{{ bitcoind_data_dir }}" 2>&1
+end script

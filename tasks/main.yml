@@ -1,5 +1,91 @@
 ---
 
-- include: bitcoind.yml
-- include: blockparser.yml
-- include: logstash.yml
+- name: Install dependencies
+  apt: name={{ item.value.apt_name }}
+  when: ansible_pkg_mgr == "apt"
+  with_dict: bitcoind_packages
+  tags:
+    - bitcoind
+
+- name: Clone repository
+  git: repo="{{ bitcoind_repo }}" dest="{{ bitcoind_source_dir }}" accept_hostkey=true version="{{ bitcoind_version }}"
+  tags:
+    - bitcoind
+
+- name: Run autogen script
+  command: ./autogen.sh
+  args:
+    chdir: "{{ bitcoind_source_dir }}"
+    creates: "{{ bitcoind_source_dir }}/configure"
+  tags:
+    - bitcoind
+  
+- name: Run configure script
+  command: ./configure {{ bitcoind_configure_flags }}
+  args:
+    chdir: "{{ bitcoind_source_dir }}"
+    creates: "{{ bitcoind_source_dir }}/Makefile"
+  tags:
+    - bitcoind
+  
+- name: Make
+  command: make
+  args:
+    chdir: "{{ bitcoind_source_dir }}"
+    creates: "{{ bitcoind_source_dir }}/src/bitcoind"
+  tags:
+    - bitcoind
+  
+- name: Make install
+  command: make install
+  args:
+    chdir: "{{ bitcoind_source_dir }}"
+    creates: /usr/local/bin/bitcoind
+  notify:
+    - restart bitcoind
+  tags:
+    - bitcoind
+
+- name: Create group
+  group: name={{ bitcoind_group }}
+  notify:
+    - restart bitcoind
+  tags:
+    - bitcoind
+
+- name: Create user
+  user: name={{ bitcoind_user }} comment="bitcoind" group={{ bitcoind_group }} shell=/bin/false home={{ bitcoind_home_dir }}
+  notify:
+    - restart bitcoind
+  tags:
+    - bitcoind
+
+- name: Create data directory
+  file: path={{ bitcoind_data_dir }} state=directory owner={{ bitcoind_user }} group={{ bitcoind_group }} mode=0755
+  tags:
+    - bitcoind
+
+- name: Create configuration directory
+  file: path={{ bitcoind_conf_dir }} state=directory owner=root group=root mode=0755
+  tags:
+    - bitcoind
+
+- name: Create configuration file
+  template: src=bitcoind.conf.j2 dest={{ bitcoind_conf_dir }}/bitcoind.conf owner=root group={{ bitcoind_group }} mode=0640
+  notify:
+    - restart bitcoind
+  tags:
+    - bitcoind
+
+- name: Create upstart configuration file
+  template: src=upstart.conf.j2 dest=/etc/init/bitcoind.conf owner=root group=root mode=0644
+  when: ansible_os_family == "Debian"
+  notify:
+    - restart bitcoind
+  tags:
+    - bitcoind
+
+- name: Start bitcoind
+  service: name=bitcoind state={{bitcoind_state}} enabled={{ bitcoind_enable }}
+  tags:
+    - bitcoind

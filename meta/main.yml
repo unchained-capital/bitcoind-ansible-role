@@ -1,0 +1,11 @@
+---
+
+galaxy_info:
+  author: "Dhruv Bansal"
+  company: Perfect Timing, LLC
+  license: Apache
+  platforms:
+   - name: Ubuntu
+     versions:
+      - trusty
+dependencies: []

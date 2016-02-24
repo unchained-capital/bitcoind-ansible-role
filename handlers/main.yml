@@ -1,7 +1,4 @@
-# file: bitcoind/handlers/main.yml
+---
 
 - name: restart bitcoind
   service: name=bitcoind state=restarted
-  
-- name: restart logstash
-  service: name=logstash state=restarted
