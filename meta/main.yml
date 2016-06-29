@@ -4,8 +4,12 @@ galaxy_info:
   author: "Dhruv Bansal"
   company: Perfect Timing, LLC
   license: Apache
+  min_ansible_version: 2.0
   platforms:
    - name: Ubuntu
      versions:
       - trusty
+  galaxy_tags:
+    - bitcoin
+    - cryptocurrencies
 dependencies: []
