@@ -1,0 +1,10 @@
+---
+
+- name: Add bitcoin package repository
+  when: ansible_pkg_mgr == "apt"
+  apt_repository: repo="{{ bitcoind_package_repository.apt }}" state=present update_cache=yes
+
+- name: Install bitcoind packages
+  apt: name="{{ item.value.apt }}"
+  when: ansible_pkg_mgr == "apt"
+  with_dict: "{{ bitcoind_packages }}"

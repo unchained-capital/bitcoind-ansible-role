@@ -1,0 +1,35 @@
+---
+
+- name: Install dependencies
+  apt: name="{{ item.value.apt }}"
+  when: ansible_pkg_mgr == "apt"
+  with_dict: "{{ bitcoind_source_packages }}"
+
+- name: Clone repository
+  git: repo="{{ bitcoind_repo }}" dest="{{ bitcoind_source_dir }}" accept_hostkey=true version="{{ bitcoind_version }}"
+
+- name: Run autogen script
+  command: ./autogen.sh
+  args:
+    chdir: "{{ bitcoind_source_dir }}"
+    creates: "{{ bitcoind_source_dir }}/configure"
+  
+- name: Run configure script
+  command: "./configure {{ bitcoind_configure_flags }}"
+  args:
+    chdir: "{{ bitcoind_source_dir }}"
+    creates: "{{ bitcoind_source_dir }}/Makefile"
+  
+- name: Make
+  command: make
+  args:
+    chdir: "{{ bitcoind_source_dir }}"
+    creates: "{{ bitcoind_source_dir }}/src/bitcoind"
+  
+- name: Make install
+  command: make install
+  args:
+    chdir: "{{ bitcoind_source_dir }}"
+    creates: /usr/local/bin/bitcoind
+  notify:
+    - restart bitcoind

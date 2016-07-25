@@ -1,41 +1,52 @@
 ---
 
+# Install from source?
+bitcoind_install_source: false
+
 #
-# Dependencies
+# Package Installation
 #
+
+bitcoind_package_repository:
+  apt: "ppa:bitcoin/bitcoin"
 
 bitcoind_packages:
+  bitcoind:
+    desription: bitcoind daemon
+    apt: bitcoind
+  
+#
+# Source Installation
+#
+
+bitcoind_source_packages:
   build-essential:
     desription: build-essential
-    apt_name: build-essential
+    apt: build-essential
   libtool:
     description: libtool
-    apt_name: libtool
+    apt: libtool
   autotools-dev:
     description: autotools-dev
-    apt_name: autotools-dev
+    apt: autotools-dev
   automake:
     description: automake
-    apt_name: automake
+    apt: automake
   pkg-config:
     description: pkg-config
-    apt_name: pkg-config
+    apt: pkg-config
   libssl-dev:
     description: libssl-dev
-    apt_name: libssl-dev
+    apt: libssl-dev
   libevent-dev:
     description: libevent-dev
-    apt_name: libevent-dev
+    apt: libevent-dev
   bsdmainutils:
     description: bsdmainutils
-    apt_name: bsdmainutils
+    apt: bsdmainutils
   libboost-all-dev:
     description: libboost-all-dev
-    apt_name: libboost-all-dev
-
-#
-# Build options
-#
+    apt: libboost-all-dev
 
 bitcoind_repo: git://github.com/bitcoin/bitcoin
 bitcoind_configure_flags: --without-miniupnpc --disable-wallet --without-gui
@@ -49,6 +60,7 @@ bitcoind_home_dir:   /var/run/bitcoind
 bitcoind_source_dir: /usr/local/src/bitcoin
 bitcoind_data_dir:   /var/lib/bitcoind
 bitcoind_conf_dir:   /etc/bitcoind
+
 #
 # User & group
 #
