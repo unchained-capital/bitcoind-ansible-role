@@ -1,15 +1,9 @@
 # {{ ansible_managed }}
-# Compatible with Bitcoin Core Daemon version v0.12.0
+# Compatible with Bitcoin Core Daemon version v0.13.1.0-g03422e5
 
 #
 # Options
 #
-
-# Receive and display P2P network alerts (default: 1)
-#alerts=[0|1]
-{% if bitcoind_alerts is defined %}
-alerts={{ bitcoind_alerts }}
-{% endif %}
 
 # Execute command when a relevant alert is received or we see a really
 # long fork (%s in cmd is replaced by message)
@@ -25,7 +19,7 @@ alertnotify={{ bitcoind_alertnotify }}
 blocknotify={{ bitcoind_blocknotify }}
 {% endif %}
 
-# How many blocks to check at startup (default: 288, 0 = all)
+# How many blocks to check at startup (default: 6, 0 = all)
 #checkblocks=<n>
 {% if bitcoind_checkblocks is defined %}
 checkblocks={{ bitcoind_checkblocks }}
@@ -37,13 +31,7 @@ checkblocks={{ bitcoind_checkblocks }}
 checklevel={{ bitcoind_checklevel }}
 {% endif %}
 
-# Run in the background as a daemon and accept commands
-#daemon=[0|1]
-{% if bitcoind_daemon is defined %}
-daemon={{ bitcoind_daemon }}
-{% endif %}
-
-# Set database cache size in megabytes (4 to 16384, default: 100)
+# Set database cache size in megabytes (4 to 16384, default: 300)
 #dbcache=<n>
 {% if bitcoind_dbcache is defined %}
 dbcache={{ bitcoind_dbcache }}
@@ -81,26 +69,14 @@ mempoolexpiry={{ bitcoind_mempoolexpiry }}
 par={{ bitcoind_par }}
 {% endif %}
 
-# Specify pid file (default: bitcoind.pid)
-#pid=<file>
-{% if bitcoind_pid is defined %}
-pid={{ bitcoind_pid }}
-{% endif %}
-
 # Reduce storage requirements by pruning (deleting) old blocks. This mode
-# is incompatible with -txindex and -rescan. Warning: Reverting this
-# setting requires re-downloading the entire blockchain. (default: 0 =
-# disable pruning blocks, >550 = target size in MiB to use for block
-# files)
+# is incompatible with -txindex and -rescan. Warning: Reverting
+# this setting requires re-downloading the entire blockchain.
+# (default: 0 = disable pruning blocks, >550 = target size in MiB
+# to use for block files)
 #prune=<n>
 {% if bitcoind_prune is defined %}
 prune={{ bitcoind_prune }}
-{% endif %}
-
-# Rebuild block chain index from current blk000??.dat files on startup
-#reindex=[0|1]
-{% if bitcoind_reindex is defined %}
-reindex={{ bitcoind_reindex }}
 {% endif %}
 
 # Create new files with system default permissions, instead of umask 077
@@ -215,6 +191,14 @@ maxreceivebuffer={{ bitcoind_maxreceivebuffer }}
 maxsendbuffer={{ bitcoind_maxsendbuffer }}
 {% endif %}
 
+# Maximum allowed median peer time offset adjustment. Local perspective of
+# time may be influenced by peers forward or backward by this
+# amount. (default: 4200 seconds)
+#maxtimeadjustment=[0|1]
+{% if bitcoind_maxtimeadjustment is defined %}
+maxtimeadjustment={{ bitcoind_maxtimeadjustment }}
+{% endif %}
+
 # Use separate SOCKS5 proxy to reach peers via Tor hidden services
 # (default: -proxy)
 #onion=<ip:port>
@@ -293,9 +277,9 @@ whitebind={{ bitcoind_whitebind }}
 {% endif %}
 
 # Whitelist peers connecting from the given netmask or IP address. Can be
-# specified multiple times. Whitelisted peers cannot be DoS banned and
-# their transactions are always relayed, even if they are already in the
-# mempool, useful e.g. for a gateway
+# specified multiple times. Whitelisted peers cannot be DoS banned
+# and their transactions are always relayed, even if they are
+# already in the mempool, useful e.g. for a gateway
 #whitelist=<netmask>
 {% if bitcoind_whitelist is defined %}
 {% for value in bitcoind_whitelist %}
@@ -310,7 +294,7 @@ whitelist={{ value }}
 whitelistrelay={{ bitcoind_whitelistrelay }}
 {% endif %}
 
-# Force relay of transactions from whitelisted peers even they violate
+# Force relay of transactions from whitelisted peers even if they violate
 # local relay policy (default: 1)
 #whitelistforcerelay=[0|1]
 {% if bitcoind_whitelistforcerelay is defined %}
@@ -325,6 +309,136 @@ maxuploadtarget={{ bitcoind_maxuploadtarget }}
 {% endif %}
 
 #
+# Wallet options
+#
+
+# Do not load the wallet and disable wallet RPC calls
+#disablewallet=[0|1]
+{% if bitcoind_disablewallet is defined %}
+disablewallet={{ bitcoind_disablewallet }}
+{% endif %}
+
+# Set key pool size to <n> (default: 100)
+#keypool=<n>
+{% if bitcoind_keypool is defined %}
+keypool={{ bitcoind_keypool }}
+{% endif %}
+
+# A fee rate (in BTC/kB) that will be used when fee estimation has
+# insufficient data (default: 0.0002)
+#fallbackfee=<amt>
+{% if bitcoind_fallbackfee is defined %}
+fallbackfee={{ bitcoind_fallbackfee }}
+{% endif %}
+
+# Fees (in BTC/kB) smaller than this are considered zero fee for
+# transaction creation (default: 0.00001)
+#mintxfee=<amt>
+{% if bitcoind_mintxfee is defined %}
+mintxfee={{ bitcoind_mintxfee }}
+{% endif %}
+
+# Fee (in BTC/kB) to add to transactions you send (default: 0.00)
+#paytxfee=<amt>
+{% if bitcoind_paytxfee is defined %}
+paytxfee={{ bitcoind_paytxfee }}
+{% endif %}
+
+# Rescan the block chain for missing wallet transactions on startup
+#rescan=[0|1]
+{% if bitcoind_rescan is defined %}
+rescan={{ bitcoind_rescan }}
+{% endif %}
+
+# Attempt to recover private keys from a corrupt wallet on startup
+#salvagewallet=[0|1]
+{% if bitcoind_salvagewallet is defined %}
+salvagewallet={{ bitcoind_salvagewallet }}
+{% endif %}
+
+# Spend unconfirmed change when sending transactions (default: 1)
+#spendzeroconfchange=[0|1]
+{% if bitcoind_spendzeroconfchange is defined %}
+spendzeroconfchange={{ bitcoind_spendzeroconfchange }}
+{% endif %}
+
+# If paytxfee is not set, include enough fee so transactions begin
+# confirmation on average within n blocks (default: 2)
+#txconfirmtarget=<n>
+{% if bitcoind_txconfirmtarget is defined %}
+txconfirmtarget={{ bitcoind_txconfirmtarget }}
+{% endif %}
+
+# Use hierarchical deterministic key generation (HD) after BIP32. Only has
+# effect during wallet creation/first start (default: 1)
+#usehd=[0|1]
+{% if bitcoind_usehd is defined %}
+usehd={{ bitcoind_usehd }}
+{% endif %}
+
+# Upgrade wallet to latest format on startup
+#upgradewallet=[0|1]
+{% if bitcoind_upgradewallet is defined %}
+upgradewallet={{ bitcoind_upgradewallet }}
+{% endif %}
+
+# Specify wallet file (within data directory) (default: wallet.dat)
+#wallet=<file>
+{% if bitcoind_wallet is defined %}
+wallet={{ bitcoind_wallet }}
+{% endif %}
+
+# Make the wallet broadcast transactions (default: 1)
+#walletbroadcast=[0|1]
+{% if bitcoind_walletbroadcast is defined %}
+walletbroadcast={{ bitcoind_walletbroadcast }}
+{% endif %}
+
+# Execute command when a wallet transaction changes (%s in cmd is replaced
+# by TxID)
+#walletnotify=<cmd>
+{% if bitcoind_walletnotify is defined %}
+walletnotify={{ bitcoind_walletnotify }}
+{% endif %}
+
+# Delete all wallet transactions and only recover those parts of the
+# blockchain through -rescan on startup (1 = keep tx meta data e.g.
+# account owner and payment request information, 2 = drop tx meta
+# data)
+#zapwallettxes=<mode>
+{% if bitcoind_zapwallettxes is defined %}
+zapwallettxes={{ bitcoind_zapwallettxes }}
+{% endif %}
+
+#
+# ZeroMQ notification options
+#
+
+# Enable publish hash block in <address>
+#zmqpubhashblock=<address>
+{% if bitcoind_zmqpubhashblock is defined %}
+zmqpubhashblock={{ bitcoind_zmqpubhashblock }}
+{% endif %}
+
+# Enable publish hash transaction in <address>
+#zmqpubhashtx=<address>
+{% if bitcoind_zmqpubhashtx is defined %}
+zmqpubhashtx={{ bitcoind_zmqpubhashtx }}
+{% endif %}
+
+# Enable publish raw block in <address>
+#zmqpubrawblock=<address>
+{% if bitcoind_zmqpubrawblock is defined %}
+zmqpubrawblock={{ bitcoind_zmqpubrawblock }}
+{% endif %}
+
+# Enable publish raw transaction in <address>
+#zmqpubrawtx=<address>
+{% if bitcoind_zmqpubrawtx is defined %}
+zmqpubrawtx={{ bitcoind_zmqpubrawtx }}
+{% endif %}
+
+#
 # Debugging/Testing options
 #
 
@@ -335,26 +449,14 @@ uacomment={{ bitcoind_uacomment }}
 {% endif %}
 
 # Output debugging information (default: 0, supplying <category> is
-# optional). If <category> is not supplied or if <category> = 1, output
-# all debugging information.<category> can be: addrman, alert, bench,
-# coindb, db, lock, rand, rpc, selectcoins, mempool, mempoolrej, net,
-# proxy, prune, http, libevent, tor, zmq.
+# optional). If <category> is not supplied or if <category> = 1,
+# output all debugging information.<category> can be: addrman,
+# alert, bench, coindb, db, http, libevent, lock, mempool,
+# mempoolrej, net, proxy, prune, rand, reindex, rpc, selectcoins,
+# tor, zmq.
 #debug=<category>
 {% if bitcoind_debug is defined %}
 debug={{ bitcoind_debug }}
-{% endif %}
-
-# Generate coins (default: 0)
-#gen=[0|1]
-{% if bitcoind_gen is defined %}
-gen={{ bitcoind_gen }}
-{% endif %}
-
-# Set the number of threads for coin generation if enabled (-1 = all
-# cores, default: 1)
-#genproclimit=<n>
-{% if bitcoind_genproclimit is defined %}
-genproclimit={{ bitcoind_genproclimit }}
 {% endif %}
 
 # Include IP addresses in debug output (default: 0)
@@ -374,6 +476,14 @@ logtimestamps={{ bitcoind_logtimestamps }}
 #minrelaytxfee=<amt>
 {% if bitcoind_minrelaytxfee is defined %}
 minrelaytxfee={{ bitcoind_minrelaytxfee }}
+{% endif %}
+
+# Maximum total fees (in BTC) to use in a single wallet transaction or raw
+# transaction; setting this too low may abort large transactions
+# (default: 0.10)
+#maxtxfee=<amt>
+{% if bitcoind_maxtxfee is defined %}
+maxtxfee={{ bitcoind_maxtxfee }}
 {% endif %}
 
 # Send trace/debug info to console instead of debug.log file
@@ -402,7 +512,8 @@ testnet={{ bitcoind_testnet }}
 # Node relay options
 #
 
-# Minimum bytes per sigop in transactions we relay and mine (default: 20)
+# Equivalent bytes per sigop in transactions for relay and mining
+# (default: 20)
 #bytespersigop=[0|1]
 {% if bitcoind_bytespersigop is defined %}
 bytespersigop={{ bitcoind_bytespersigop }}
@@ -431,10 +542,10 @@ mempoolreplacement={{ bitcoind_mempoolreplacement }}
 # Block creation options
 #
 
-# Set minimum block size in bytes (default: 0)
-#blockminsize=<n>
-{% if bitcoind_blockminsize is defined %}
-blockminsize={{ bitcoind_blockminsize }}
+# Set maximum BIP141 block weight (default: 3000000)
+#blockmaxweight=<n>
+{% if bitcoind_blockmaxweight is defined %}
+blockmaxweight={{ bitcoind_blockmaxweight }}
 {% endif %}
 
 # Set maximum block size in bytes (default: 750000)
@@ -467,8 +578,8 @@ rest={{ bitcoind_rest }}
 {% endif %}
 
 # Bind to given address to listen for JSON-RPC connections. Use
-# [host]:port notation for IPv6. This option can be specified multiple
-# times (default: bind to all interfaces)
+# [host]:port notation for IPv6. This option can be specified
+# multiple times (default: bind to all interfaces)
 #rpcbind=<addr>
 {% if bitcoind_rpcbind is defined %}
 {% for value in bitcoind_rpcbind %}
@@ -495,9 +606,9 @@ rpcpassword={{ bitcoind_rpcpassword }}
 {% endif %}
 
 # Username and hashed password for JSON-RPC connections. The field
-# <userpw> comes in the format: <USERNAME>:<SALT>$<HASH>. A canonical
-# python script is included in share/rpcuser. This option can be specified
-# multiple times
+# <userpw> comes in the format: <USERNAME>:<SALT>$<HASH>. A
+# canonical python script is included in share/rpcuser. This option
+# can be specified multiple times
 #rpcauth=<userpw>
 {% if bitcoind_rpcauth is defined %}
 {% for value in bitcoind_rpcauth %}
@@ -513,9 +624,9 @@ rpcport={{ bitcoind_rpcport }}
 {% endif %}
 
 # Allow JSON-RPC connections from specified source. Valid for <ip> are a
-# single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0)
-# or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified
-# multiple times
+# single IP (e.g. 1.2.3.4), a network/netmask (e.g.
+# 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This
+# option can be specified multiple times
 #rpcallowip=<ip>
 {% if bitcoind_rpcallowip is defined %}
 {% for value in bitcoind_rpcallowip %}

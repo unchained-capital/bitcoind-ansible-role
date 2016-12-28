@@ -1,0 +1,29 @@
+---
+
+- name: Create group
+  group: name="{{ bitcoind_group }}"
+  when: bitcoind_group_id is not defined
+  tags: [groups]
+  notify:
+    - restart bitcoind
+  
+- name: Create group
+  group: name="{{ bitcoind_group }}" gid={{ bitcoind_group_id }}
+  when: bitcoind_group_id is defined
+  tags: [groups]
+  notify:
+    - restart bitcoind
+    
+- name: Create user
+  user: name="{{ bitcoind_user }}" comment="bitcoind" group="{{ bitcoind_group }}" shell="/bin/false" home="{{ bitcoind_home_dir }}"
+  when: bitcoind_user_id is not defined
+  tags: [users]
+  notify:
+    - restart bitcoind
+
+- name: Create user
+  user: name="{{ bitcoind_user }}" comment="bitcoind" group="{{ bitcoind_group }}" shell="/bin/false" home="{{ bitcoind_home_dir }}" uid={{ bitcoind_user_id }}
+  when: bitcoind_user_id is defined
+  tags: [users]
+  notify:
+    - restart bitcoind

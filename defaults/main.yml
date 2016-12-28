@@ -12,7 +12,7 @@ bitcoind_package_repository:
 
 bitcoind_packages:
   bitcoind:
-    desription: bitcoind daemon
+    description: bitcoind daemon
     apt: bitcoind
   
 #
@@ -21,7 +21,7 @@ bitcoind_packages:
 
 bitcoind_source_packages:
   build-essential:
-    desription: build-essential
+    description: build-essential
     apt: build-essential
   libtool:
     description: libtool
@@ -50,7 +50,7 @@ bitcoind_source_packages:
 
 bitcoind_repo: git://github.com/bitcoin/bitcoin
 bitcoind_configure_flags: --without-miniupnpc --disable-wallet --without-gui
-bitcoind_version: "0.12"
+bitcoind_version: "0.13.1"        # only used during source install
 
 #
 # Paths & directories

@@ -4,15 +4,11 @@ def bitcoind_command
   ENV['BITCOIND'] || 'bitcoind'
 end
 
-def bitcoind_help_text
-  `#{bitcoind_command} -h`.chomp
-end
-
 class BitcoindHelpTransformer
 
   HANDLERS         = []
   IGNORED_SECTIONS = Set.new(%w[Usage])
-  IGNORED_OPTIONS  = Set.new(%w[? version conf help-debug datadir])
+  IGNORED_OPTIONS  = Set.new(%w[? version conf daemon help-debug datadir pid reindex-chainstate reindex])
   LISTY_OPTIONS    = Set.new(%w[whitelist rpcbind rpcauth rpcallowip])
   
   def self.ignore name, pattern
@@ -123,4 +119,4 @@ SCALAR_OPTION
   
 end
 
-puts BitcoindHelpTransformer.new(bitcoind_help_text).transform! if __FILE__ == $0
+puts BitcoindHelpTransformer.new($stdin.read.chomp).transform! if __FILE__ == $0
