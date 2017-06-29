@@ -15,7 +15,7 @@
     - restart bitcoind
     
 - name: Create user
-  user: name="{{ bitcoind_user }}" comment="bitcoind" group="{{ bitcoind_group }}" shell="/bin/false" home="{{ bitcoind_home_dir }}"
+  user: name="{{ bitcoind_user }}" comment="bitcoind" group="{{ bitcoind_group }}" shell="/bin/false" home="{{ bitcoind_home_dir }}" createhome=yes
   when: bitcoind_user_id is not defined
   tags: [users]
   notify:
